@@ -99,14 +99,28 @@ Note:
 
 # Rammebetingelser
 
+Note: 
+- setter ingen kontekst/ramme for refaktorering: koden suger, den kan bli
+  bedre. 
+- ønsker du å refaktorere for et bestemt formål, bestem et og si hva du gjør. 
+
+
+---
+
+@snap[north-west]
+### Velg en ramme for arbeidet 
+@snapend
+
+* redesign
+* behold API-grensesnitt 
+* minimal stil: ferdig på maks 2 timer
+
 Note:
 - "alt" er lov: redesign, prisen skal være den samme
 - Testgrensesnitt (API) skal beholdes, ellers står du/dere fritt til å endre
 - fullstendig løsning i løpet av 2 timer (minimum effort)
 - alle kan legge på tester dersom refaktoreringen krever det (vet det finnes
   noen løsninger som lager hull i testdekning)
-- hva er rammen for refaktoreringen? ble spurt om forrige gang. Trenger du en
-  ramme? Sett den. Men: koden er ikke særlig lesbar.  
 
 
 --- 
