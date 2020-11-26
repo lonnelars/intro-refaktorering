@@ -1,69 +1,43 @@
 package no.kantega;
 
-public class Pub {
+import java.util.Optional;
 
+public final class Pub {
 
-    public static final String ONE_BEER = "hansa";
-    public static final String ONE_CIDER = "grans";
-    public static final String A_PROPER_CIDER = "strongbow";
-    public static final String GT = "gt";
-    public static final String BACARDI_SPECIAL = "bacardi_special";
-
-    public int computeCost(String drink, boolean student, int amount) {
-
-        if (amount > 2 && (drink == GT || drink == BACARDI_SPECIAL)) {
-            throw new RuntimeException("Too many drinks, max 2.");
+    public static Optional<Order> createOrder(Drink drink, int numberOfDrinks) {
+        if (numberOfDrinks > 2 && hasRestrictions(drink)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new Order(drink, numberOfDrinks));
         }
-        int price;
-        if (drink.equals(ONE_BEER)) {
-            price = 74;
-        }
-        else if (drink.equals(ONE_CIDER)) {
-            price = 103;
-        }
-        else if (drink.equals(A_PROPER_CIDER)) price = 110;
-        else if (drink.equals(GT)) {
-            price = ingredient6() + ingredient5() + ingredient4();
-        }
-        else if (drink.equals(BACARDI_SPECIAL)) {
-            price = ingredient6()/2 + ingredient1() + ingredient2() + ingredient3();
-        }
-        else {
-            throw new RuntimeException("No such drink exists");
-        }
-        if (student && (drink == ONE_CIDER || drink == ONE_BEER || drink == A_PROPER_CIDER)) {
-            price = price - price/10;
-        }
-        return price*amount;
     }
 
-    //one unit of rum
-    private int ingredient1() {
-        return 65;
+    private static boolean hasRestrictions(Drink drink) {
+        return drink == Drink.GT || drink == Drink.BACARDI_SPECIAL;
     }
 
-    //one unit of grenadine
-    private int ingredient2() {
-        return 10;
+    public static int computeCost(Order order) {
+        return order.drink.price * order.numberOfDrinks;
     }
 
-    //one unit of lime juice
-    private int ingredient3() {
-        return 10;
-    }
-    
-    //one unit of green stuff
-    private int ingredient4() {
-        return 10;
+    public static int computeStudentCost(Order order) {
+        final int discount = qualifiesForDiscount(order.drink)
+                ? order.drink.price / 10
+                : 0;
+        return (order.drink.price - discount) * order.numberOfDrinks;
     }
 
-    //one unit of tonic water
-    private int ingredient5() {
-        return 20;
+    private static boolean qualifiesForDiscount(Drink drink) {
+        return drink == Drink.CIDER || drink == Drink.BEER || drink == Drink.PROPER_CIDER;
     }
 
-    //one unit of gin
-    private int ingredient6() {
-        return 85;
+    static class Order {
+        final Drink drink;
+        final int numberOfDrinks;
+
+        private Order(Drink drink, int numberOfDrinks) {
+            this.drink = drink;
+            this.numberOfDrinks = numberOfDrinks;
+        }
     }
 }
